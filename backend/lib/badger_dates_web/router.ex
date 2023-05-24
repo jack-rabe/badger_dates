@@ -9,7 +9,10 @@ defmodule BadgerDatesWeb.Router do
     pipe_through :api
 
     resources "/users", UserController, except: [:new, :edit]
+
+    # UserLinks routes
     get "/links/:user_id", UserController, :links
+    get "/links/:user_id/next", UserController, :get_potential_match
     patch "/links/:link_id", UserController, :update_link
   end
 

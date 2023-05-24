@@ -48,6 +48,13 @@ defmodule BadgerDatesWeb.UserController do
     end
   end
 
+  # routes for UserLinks
+
+  def get_potential_match(conn, %{"user_id" => user_id}) do
+    link = Accounts.get_potential_match(user_id)
+    render(conn, "show.json", user: link)
+  end
+
   def links(conn, %{"user_id" => user_id}) do
     conn = put_view(conn, BadgerDatesWeb.UserLinksView)
     links = Accounts.list_user_links(user_id)

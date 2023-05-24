@@ -37,6 +37,23 @@ defmodule BadgerDates.Accounts do
     |> Repo.update()
   end
 
+  # TODO remove duplicate query code
+  def get_potential_match(user_id) do
+    %UserLink{user1: user1, user2: user2} =
+      from(ul in UserLink,
+        where:
+          (ul.user1 == ^user_id and ul.user1_response == "") or
+            (ul.user2 == ^user_id and ul.user2_response == "")
+      )
+      |> Repo.one!()
+
+    if user_id == user2 do
+      get_user!(user1)
+    else
+      get_user!(user2)
+    end
+  end
+
   @doc """
   Returns the list of users.
 
