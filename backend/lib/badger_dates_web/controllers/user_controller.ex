@@ -1,6 +1,7 @@
 defmodule BadgerDatesWeb.UserController do
   use BadgerDatesWeb, :controller
 
+  alias BadgerDates.Accounts.UserLink
   alias BadgerDates.Accounts
   alias BadgerDates.Accounts.User
 
@@ -48,8 +49,19 @@ defmodule BadgerDatesWeb.UserController do
   end
 
   def links(conn, %{"user_id" => user_id}) do
-    links = Accounts.list_user_links(user_id)
     conn = put_view(conn, BadgerDatesWeb.UserLinksView)
+    links = Accounts.list_user_links(user_id)
     render(conn, "index.json", links: links)
+  end
+
+  def update_link(conn, %{"link_id" => id, "link" => link_params}) do
+    conn = put_view(conn, BadgerDatesWeb.UserLinksView)
+
+    {:ok, updated_link} = Jason.decode(link_params)
+    link = Accounts.get_link!(id)
+
+    with {:ok, %UserLink{} = link} <- Accounts.update_link(link, updated_link) do
+      render(conn, "show.json", link: link)
+    end
   end
 end

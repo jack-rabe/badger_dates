@@ -10,6 +10,7 @@ defmodule BadgerDatesWeb.Router do
 
     resources "/users", UserController, except: [:new, :edit]
     get "/links/:user_id", UserController, :links
+    patch "/links/:link_id", UserController, :update_link
   end
 
   # Enables LiveDashboard only for development

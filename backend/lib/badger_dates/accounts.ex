@@ -21,8 +21,20 @@ defmodule BadgerDates.Accounts do
     Returns the list of user links for a given user
   """
   def list_user_links(user_id) do
-    from(ul in UserLink, where: ul.user1 == ^user_id or ul.user2 == ^user_id)
+    from(ul in UserLink,
+      where:
+        (ul.user1 == ^user_id and not ul.user1_response) or
+          (ul.user2 == ^user_id and not ul.user2_response)
+    )
     |> Repo.all()
+  end
+
+  def get_link!(id), do: Repo.get!(UserLink, id)
+
+  def update_link(%UserLink{} = link, attrs) do
+    link
+    |> UserLink.changeset(attrs)
+    |> Repo.update()
   end
 
   @doc """

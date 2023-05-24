@@ -12,6 +12,12 @@ defmodule BadgerDatesWeb.UserLinksView do
   end
 
   def render("link.json", %{user_links: link = %UserLink{}}) do
-    %{id: link.id, user1: link.user1, user2: link.user2}
+    %{
+      id: link.id,
+      user1: link.user1,
+      user2: link.user2,
+      user1_response: link.user1_response,
+      user2_response: link.user2_response
+    }
   end
 end
