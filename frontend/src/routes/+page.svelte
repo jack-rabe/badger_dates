@@ -1,7 +1,7 @@
 <script lang="ts">
+	import type { User } from '../types/User';
 	import NewUserForm from './form.svelte';
 	import { onMount } from 'svelte';
-	type User = { name: string; age: number };
 	let users: User[] = [];
 
 	onMount(() => {
@@ -9,7 +9,8 @@
 			.then((res) => res.json())
 			.then((res) => {
 				users = res.data;
-			});
+			})
+			.catch((e) => console.error(e));
 	});
 </script>
 
