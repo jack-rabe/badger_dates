@@ -9,6 +9,7 @@ defmodule BadgerDatesWeb.Router do
     pipe_through :api
 
     resources "/users", UserController, except: [:new, :edit]
+    get "/links/:user_id", UserController, :links
   end
 
   # Enables LiveDashboard only for development

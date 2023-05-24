@@ -46,4 +46,10 @@ defmodule BadgerDatesWeb.UserController do
       send_resp(conn, :no_content, "")
     end
   end
+
+  def links(conn, %{"user_id" => user_id}) do
+    links = Accounts.list_user_links(user_id)
+    conn = put_view(conn, BadgerDatesWeb.UserLinksView)
+    render(conn, "index.json", links: links)
+  end
 end

@@ -18,10 +18,11 @@ defmodule BadgerDates.Accounts do
   end
 
   @doc """
-    Returns the list of user links
+    Returns the list of user links for a given user
   """
-  def list_user_links do
-    Repo.all(UserLink)
+  def list_user_links(user_id) do
+    from(ul in UserLink, where: ul.user1 == ^user_id or ul.user2 == ^user_id)
+    |> Repo.all()
   end
 
   @doc """

@@ -41,7 +41,7 @@ defmodule BadgerDatesWeb.UserControllerTest do
     test "renders user when data is valid", %{conn: conn} do
       conn = post(conn, Routes.user_path(conn, :create), @create_attrs)
       assert %{"id" => id} = json_response(conn, 201)["data"]
-      assert Accounts.list_user_links() |> length == 1
+      assert Accounts.list_user_links(id) |> length == 1
 
       conn = get(conn, Routes.user_path(conn, :show, id))
 
