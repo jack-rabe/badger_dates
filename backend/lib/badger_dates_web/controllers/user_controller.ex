@@ -50,24 +50,42 @@ defmodule BadgerDatesWeb.UserController do
 
   # routes for UserLinks
 
+  @doc """
+    returns a single User who has not been linked before
+  """
   def get_potential_match(conn, %{"user_id" => user_id}) do
     link = Accounts.get_potential_match(user_id)
     render(conn, "show.json", user: link)
   end
 
+  @doc """
+    returns all potential links for a given user (probably not needed)
+  """
   def links(conn, %{"user_id" => user_id}) do
     conn = put_view(conn, BadgerDatesWeb.UserLinksView)
     links = Accounts.list_user_links(user_id)
     render(conn, "index.json", links: links)
   end
 
-  def update_link(conn, %{"link_id" => id, "link" => link_params}) do
-    conn = put_view(conn, BadgerDatesWeb.UserLinksView)
+  def accept_match(conn, params) do
+    handle_match(conn, params, "yes")
+  end
 
-    {:ok, updated_link} = Jason.decode(link_params)
-    link = Accounts.get_link!(id)
+  def decline_match(conn, params) do
+    handle_match(conn, params, "no")
+  end
 
-    with {:ok, %UserLink{} = link} <- Accounts.update_link(link, updated_link) do
+  defp handle_match(conn, %{"user_id" => user_id, "other_id" => other_id}, answer) do
+    link = Accounts.get_link!(user_id, other_id)
+
+    user_atom =
+      cond do
+        link.user1 == user_id -> :user1_response
+        true -> :user2_response
+      end
+
+    with {:ok, %UserLink{} = link} <- Accounts.update_link(link, %{user_atom => answer}) do
+      conn = put_view(conn, BadgerDatesWeb.UserLinksView)
       render(conn, "show.json", link: link)
     end
   end

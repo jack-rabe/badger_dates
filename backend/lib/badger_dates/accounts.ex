@@ -29,7 +29,16 @@ defmodule BadgerDates.Accounts do
     |> Repo.all()
   end
 
-  def get_link!(id), do: Repo.get!(UserLink, id)
+  def get_link!(link_id), do: Repo.get!(UserLink, link_id)
+
+  def get_link!(user1_id, user2_id) do
+    from(ul in UserLink,
+      where:
+        (ul.user1 == ^user1_id and ul.user2 == ^user2_id) or
+          (ul.user1 == ^user2_id and ul.user2 == ^user1_id)
+    )
+    |> Repo.one!()
+  end
 
   def update_link(%UserLink{} = link, attrs) do
     link

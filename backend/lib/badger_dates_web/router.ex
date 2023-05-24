@@ -13,7 +13,8 @@ defmodule BadgerDatesWeb.Router do
     # UserLinks routes
     get "/links/:user_id", UserController, :links
     get "/links/:user_id/next", UserController, :get_potential_match
-    patch "/links/:link_id", UserController, :update_link
+    patch "/accept_match/:user_id/:other_id", UserController, :accept_match
+    patch "/decline_match/:user_id/:other_id", UserController, :decline_match
   end
 
   # Enables LiveDashboard only for development
