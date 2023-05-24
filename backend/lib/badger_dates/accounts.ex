@@ -18,13 +18,13 @@ defmodule BadgerDates.Accounts do
   end
 
   @doc """
-    Returns the list of user links for a given user
+    Returns the list of user links for a given user that the user has not already responded to 
   """
   def list_user_links(user_id) do
     from(ul in UserLink,
       where:
-        (ul.user1 == ^user_id and not ul.user1_response) or
-          (ul.user2 == ^user_id and not ul.user2_response)
+        (ul.user1 == ^user_id and ul.user1_response == "") or
+          (ul.user2 == ^user_id and ul.user2_response == "")
     )
     |> Repo.all()
   end

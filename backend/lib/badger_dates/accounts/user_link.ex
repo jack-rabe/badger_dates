@@ -6,9 +6,9 @@ defmodule BadgerDates.Accounts.UserLink do
   @foreign_key_type :binary_id
   schema "user_links" do
     field :user1, Ecto.UUID
-    field :user1_response, :boolean, default: false
+    field :user1_response, :string, default: ""
     field :user2, Ecto.UUID
-    field :user2_response, :boolean, default: false
+    field :user2_response, :string, default: ""
 
     timestamps()
   end
@@ -17,6 +17,6 @@ defmodule BadgerDates.Accounts.UserLink do
   def changeset(user_link, attrs) do
     user_link
     |> cast(attrs, [:user1, :user2, :user1_response, :user2_response])
-    |> validate_required([:user1, :user2, :user1_response, :user2_response])
+    |> validate_required([:user1, :user2])
   end
 end
