@@ -3,6 +3,7 @@ defmodule BadgerDatesWeb.UserControllerTest do
 
   import BadgerDates.AccountsFixtures
 
+  alias BadgerDates.Accounts
   alias BadgerDates.Accounts.User
 
   @create_attrs %{
@@ -24,16 +25,23 @@ defmodule BadgerDatesWeb.UserControllerTest do
   end
 
   describe "index" do
+    setup [:create_user]
+
     test "lists all users", %{conn: conn} do
       conn = get(conn, Routes.user_path(conn, :index))
-      assert json_response(conn, 200)["data"] == []
+      assert json_response(conn, 200)["data"] |> length == 1
     end
   end
 
   describe "create user" do
+    setup do
+      create_user(%User{name: "Todd"})
+    end
+
     test "renders user when data is valid", %{conn: conn} do
       conn = post(conn, Routes.user_path(conn, :create), @create_attrs)
       assert %{"id" => id} = json_response(conn, 201)["data"]
+      assert Accounts.list_user_links() |> length == 1
 
       conn = get(conn, Routes.user_path(conn, :show, id))
 
@@ -47,7 +55,7 @@ defmodule BadgerDatesWeb.UserControllerTest do
     end
 
     test "renders errors when data is invalid", %{conn: conn} do
-      conn = post(conn, Routes.user_path(conn, :create), user: @invalid_attrs)
+      conn = post(conn, Routes.user_path(conn, :create), @invalid_attrs)
       assert json_response(conn, 422)["errors"] != %{}
     end
   end

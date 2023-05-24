@@ -5,8 +5,24 @@ defmodule BadgerDates.Accounts do
 
   import Ecto.Query, warn: false
   alias BadgerDates.Repo
-
   alias BadgerDates.Accounts.User
+  alias BadgerDates.Accounts.UserLink
+
+  @doc """
+  Creates links to all other existing users
+  """
+  def create_user_link(attrs \\ %{}) do
+    %UserLink{}
+    |> UserLink.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+    Returns the list of user links
+  """
+  def list_user_links do
+    Repo.all(UserLink)
+  end
 
   @doc """
   Returns the list of users.

@@ -12,11 +12,17 @@ defmodule BadgerDatesWeb.UserController do
   end
 
   def create(conn, user_params) do
-    with {:ok, %User{} = user} <- Accounts.create_user(user_params) do
+    with {:ok, %User{} = new_user} <- Accounts.create_user(user_params) do
+      Enum.each(Accounts.list_users(), fn %User{id: other_id} ->
+        if new_user.id != other_id do
+          Accounts.create_user_link(%{user1: new_user.id, user2: other_id})
+        end
+      end)
+
       conn
       |> put_status(:created)
-      |> put_resp_header("location", Routes.user_path(conn, :show, user))
-      |> render("show.json", user: user)
+      |> put_resp_header("location", Routes.user_path(conn, :show, new_user))
+      |> render("show.json", user: new_user)
     end
   end
 
