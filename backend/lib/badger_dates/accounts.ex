@@ -48,18 +48,22 @@ defmodule BadgerDates.Accounts do
 
   # TODO remove duplicate query code
   def get_potential_match(user_id) do
-    %UserLink{user1: user1, user2: user2} =
+    res =
       from(ul in UserLink,
         where:
           (ul.user1 == ^user_id and ul.user1_response == "") or
             (ul.user2 == ^user_id and ul.user2_response == "")
       )
-      |> Repo.one!()
+      |> Repo.one()
 
-    if user_id == user2 do
-      get_user!(user1)
+    if res == nil do
+      nil
     else
-      get_user!(user2)
+      if user_id == res.user2 do
+        get_user!(res.user1)
+      else
+        get_user!(res.user2)
+      end
     end
   end
 

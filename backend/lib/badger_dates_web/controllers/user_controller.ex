@@ -55,7 +55,14 @@ defmodule BadgerDatesWeb.UserController do
   """
   def get_potential_match(conn, %{"user_id" => user_id}) do
     link = Accounts.get_potential_match(user_id)
-    render(conn, "show.json", user: link)
+
+    if is_nil(link) do
+      conn
+      |> put_resp_content_type("application/json")
+      |> send_resp(200, Jason.encode!(%{data: "no matches"}))
+    else
+      render(conn, "show.json", user: link)
+    end
   end
 
   @doc """

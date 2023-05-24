@@ -10,7 +10,8 @@
 		fetch(`http://localhost:4000/api/links/${user.id}/next`)
 			.then((res) => res.json())
 			.then((res) => {
-				otherUser = res.data;
+				if (res && res.data && res.data != 'no matches') otherUser = res.data;
+				console.log(res);
 			})
 			.catch((e) => console.error(e));
 	});
