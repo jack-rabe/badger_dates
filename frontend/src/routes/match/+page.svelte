@@ -37,23 +37,23 @@
 
 {#if otherUser}
 	<div class="m-2">
-		<div class="avatar justify-center mb-3">
-			<div class="w-5/6 rounded-full ring-primary ring md:w-2/5">
+		<div class="avatar mb-3 justify-center">
+			<div class="w-5/6 rounded-full ring ring-primary md:w-2/5">
 				<img src="images/jack_and_buster.jpeg" alt="profile pictue" />
 			</div>
 		</div>
 		<div class="flex flex-col items-center">
-			<div class="flex w-3/4 mb-2 justify-center">
-				<span class="text-3xl font-bold mr-2">{otherUser.name}</span>
+			<div class="mb-2 flex w-3/4 justify-center">
+				<span class="mr-2 text-3xl font-bold">{otherUser.name}</span>
 				<span class="flex items-end text-2xl">{otherUser.age}</span>
 			</div>
 			<div>{otherUser.location}</div>
 			<div>{otherUser.major}</div>
 		</div>
 		<div class="flex justify-center">
-			<div class="flex justify-between w-full md:w-1/2">
-				<button on:click={declineMatch} class="btn w-28 md:w-32 m-2">skip</button>
-				<button on:click={acceptMatch} class="btn w-28 md:w-32 m-2">match</button>
+			<div class="flex w-full justify-between md:w-1/2">
+				<button on:click={declineMatch} class="btn m-2 w-28 md:w-32">skip</button>
+				<button on:click={acceptMatch} class="btn m-2 w-28 md:w-32">match</button>
 			</div>
 		</div>
 	</div>
