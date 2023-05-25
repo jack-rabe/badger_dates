@@ -51,9 +51,37 @@
 			<div>{otherUser.major}</div>
 		</div>
 		<div class="flex justify-center">
-			<div class="flex w-full justify-between md:w-1/2">
-				<button on:click={declineMatch} class="btn m-2 w-28 md:w-32">skip</button>
-				<button on:click={acceptMatch} class="btn m-2 w-28 md:w-32">match</button>
+			<div class="mx-4 flex w-full justify-between md:w-1/2">
+				<button on:click={declineMatch} class="btn-circle btn-lg btn p-2 hover:btn-primary">
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						class="h-20 w-20"
+						fill="none"
+						viewBox="0 8 24 24"
+						stroke="currentColor"
+						><path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="2"
+							d="M6 18L18 6M6 6l12 12"
+						/></svg
+					>
+				</button>
+				<button on:click={acceptMatch} class="btn-circle btn-lg btn p-2 hover:btn-primary">
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						class="h-20 w-20"
+						fill="none"
+						viewBox="0 8 24 24"
+						stroke="currentColor"
+						><path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="2"
+							d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+						/></svg
+					>
+				</button>
 			</div>
 		</div>
 	</div>
