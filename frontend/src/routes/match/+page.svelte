@@ -6,48 +6,55 @@
 	let user: User;
 	user = { id: '3a9096b3-aea7-4546-a75b-b676dc4a174e' } as User;
 
-	onMount(() => {
+	onMount(() => setNextMatch());
+
+	const setNextMatch = () => {
 		fetch(`http://localhost:4000/api/links/${user.id}/next`)
 			.then((res) => res.json())
 			.then((res) => {
-				if (res && res.data && res.data != 'no matches') otherUser = res.data;
+				if (res && res.data != 'no matches') otherUser = res.data;
 				console.log(res);
 			})
 			.catch((e) => console.error(e));
-	});
+	};
 
 	const declineMatch = () => {
 		fetch(`http://localhost:4000/api/decline_match/${user.id}/${otherUser.id}`, {
 			method: 'PATCH'
 		})
 			.then((res) => res.json())
-			.then((res) => {
-				console.log(res);
-			})
+			.then((res) => console.log(res))
 			.catch((e) => console.error(e));
 	};
 
 	const acceptMatch = () => {
 		fetch(`http://localhost:4000/api/accept_match/${user.id}/${otherUser.id}`, { method: 'PATCH' })
 			.then((res) => res.json())
-			.then((res) => {
-				console.log(res);
-			})
+			.then((res) => console.log(res))
 			.catch((e) => console.error(e));
 	};
 </script>
 
 {#if otherUser}
-	<div class="bg-primary card m-2">
-		<h3 class="card-title justify-center">{otherUser.name}</h3>
-		<div class="card-body">
-			<div class="text-center">Age: {otherUser.age}</div>
-			<div class="text-center">Location: {otherUser.location}</div>
-			<div class="text-center">Major: {otherUser.major}</div>
+	<div class="m-2">
+		<div class="avatar justify-center mb-3">
+			<div class="w-5/6 rounded-full ring-primary ring md:w-2/5">
+				<img src="images/jack_and_buster.jpeg" alt="profile pictue" />
+			</div>
 		</div>
-	</div>
-	<div class="flex justify-between">
-		<button on:click={declineMatch} class="btn w-32 m-2">skip</button>
-		<button on:click={acceptMatch} class="btn w-32 m-2">match</button>
+		<div class="flex flex-col items-center">
+			<div class="flex w-3/4 mb-2 justify-center">
+				<span class="text-3xl font-bold mr-2">{otherUser.name}</span>
+				<span class="flex items-end text-2xl">{otherUser.age}</span>
+			</div>
+			<div>{otherUser.location}</div>
+			<div>{otherUser.major}</div>
+		</div>
+		<div class="flex justify-center">
+			<div class="flex justify-between w-full md:w-1/2">
+				<button on:click={declineMatch} class="btn w-28 md:w-32 m-2">skip</button>
+				<button on:click={acceptMatch} class="btn w-28 md:w-32 m-2">match</button>
+			</div>
+		</div>
 	</div>
 {/if}
