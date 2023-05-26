@@ -1,40 +1,38 @@
 <script lang="ts">
+	import { deserialize } from '$app/forms';
+	import type { ActionResult } from '@sveltejs/kit';
+
 	const locationOptions = ['Southeast', 'Lakeshore', 'Off-Campus'];
 	let form: HTMLFormElement;
-	function handleSubmit(_e: Event) {
+	async function handleSubmit(_e: Event) {
 		const formData = new FormData(form);
 
-		fetch('http://localhost:4000/api/users', {
+		// @ts-ignore
+		const res = await fetch(this.action, {
 			method: 'POST',
 			body: formData
-		})
-			.then((_res) => {
-				window.location.href = '/match';
-			})
-			.catch((e) => {
-				console.error(e);
-			});
+		});
 	}
 </script>
 
 <form bind:this={form} on:submit|preventDefault={handleSubmit} class="form-control m-4 gap-4">
-	<label class="input-group w-1/2">
-		<span>Name</span>
+	<label class="input-group w-3/4 md:w-1/2">
+		<span class="w-28">Name</span>
 		<input name="name" type="text" required class="input-bordered input w-full" />
 	</label>
-	<label class="input-group w-1/2">
-		<span>Age</span>
+	<label class="input-group w-3/4 md:w-1/2">
+		<span class="w-28">Age</span>
 		<input name="age" type="number" required class="input-bordered input w-full" />
 	</label>
-	<label class="input-group w-1/2">
-		<span>Major</span>
+	<label class="input-group w-3/4 md:w-1/2">
+		<span class="w-28">Major</span>
 		<input name="major" type="text" required class="input-bordered input w-full" />
 	</label>
 
-	<label class="input-group w-1/2">
+	<label class="input-group w-3/4 md:w-1/2">
 		<span>Location</span>
 		<!-- TODO fix this width -->
-		<select name="location" required class="select-bordered select w-full">
+		<select name="location" required class="select-bordered select w-3/4">
 			<option selected disabled />
 			{#each locationOptions as opt}
 				<option>{opt}</option>
