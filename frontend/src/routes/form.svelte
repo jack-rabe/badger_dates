@@ -8,11 +8,11 @@
 			method: 'POST',
 			body: formData
 		})
-			.then((response) => {
-				console.log(response);
+			.then((_res) => {
+				window.location.href = '/match';
 			})
-			.catch((error) => {
-				console.error(error);
+			.catch((e) => {
+				console.error(e);
 			});
 	}
 </script>
@@ -41,10 +41,20 @@
 			{/each}
 		</select>
 	</label>
-	<label class="input-group">
-		<span>Profile Picture</span>
-		<input type="file" accept="image/*" class="file-input-bordered file-input" />
-	</label>
+
+	<div class="form-control">
+		<label for="profile-picture" class="label">
+			<span class="label-text">Pick a profile picture</span>
+		</label>
+		<input
+			id="profile-picture"
+			name="profile-picture"
+			type="file"
+			required
+			accept="image/*"
+			class="file-input-bordered file-input max-w-xs"
+		/>
+	</div>
 
 	<button class="btn" type="submit">Submit</button>
 </form>
