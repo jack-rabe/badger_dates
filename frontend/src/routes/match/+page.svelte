@@ -23,14 +23,20 @@
 			method: 'PATCH'
 		})
 			.then((res) => res.json())
-			.then((res) => console.log(res))
+			.then((res) => {
+				console.log(res);
+				setNextMatch();
+			})
 			.catch((e) => console.error(e));
 	};
 
 	const acceptMatch = () => {
 		fetch(`http://localhost:4000/api/accept_match/${user.id}/${otherUser.id}`, { method: 'PATCH' })
 			.then((res) => res.json())
-			.then((res) => console.log(res))
+			.then((res) => {
+				console.log(res);
+				setNextMatch();
+			})
 			.catch((e) => console.error(e));
 	};
 </script>

@@ -54,15 +54,17 @@ defmodule BadgerDates.Accounts do
           (ul.user1 == ^user_id and ul.user1_response == "") or
             (ul.user2 == ^user_id and ul.user2_response == "")
       )
-      |> Repo.one()
+      |> Repo.all()
 
-    if res == nil do
+    if res == [] do
       nil
     else
-      if user_id == res.user2 do
-        get_user!(res.user1)
+      [valid_match | _] = res
+
+      if user_id == valid_match.user2 do
+        get_user!(valid_match.user1)
       else
-        get_user!(res.user2)
+        get_user!(valid_match.user2)
       end
     end
   end
