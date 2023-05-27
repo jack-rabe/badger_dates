@@ -8,10 +8,13 @@
 		const formData = new FormData(form);
 
 		// @ts-ignore
-		const res = await fetch(this.action, {
+		const res = fetch(this.action, {
 			method: 'POST',
 			body: formData
-		});
+		})
+			.then((res) => res.json())
+			.then((_res) => (window.location.href = '/match'))
+			.catch((e) => console.error(e));
 	}
 </script>
 

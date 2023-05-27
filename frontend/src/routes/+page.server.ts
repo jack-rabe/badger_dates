@@ -33,14 +33,10 @@ export const actions = {
 
 const createUser = (formData: FormData) => {
 	formData.delete('profile-picture');
-	fetch('http://localhost:4000/api/users', {
+	fetch('http://127.0.0.1:4000/api/users', {
 		method: 'POST',
 		body: formData
-	})
-		.then((_res) => {
-			window.location.href = '/match';
-		})
-		.catch((e) => {
-			console.error(e);
-		});
+	}).catch((e) => {
+		console.error(e);
+	});
 };
