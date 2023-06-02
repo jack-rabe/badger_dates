@@ -2,7 +2,7 @@
 	import { onMount } from 'svelte';
 	import type { User } from '../../types/User';
 
-	let otherUser: User;
+	let otherUser: User | null;
 	let user: User;
 	user = { id: '3a9096b3-aea7-4546-a75b-b676dc4a174e' } as User;
 
@@ -13,13 +13,14 @@
 			.then((res) => res.json())
 			.then((res) => {
 				if (res && res.data != 'no matches') otherUser = res.data;
+				else otherUser = null;
 				console.log(res);
 			})
 			.catch((e) => console.error(e));
 	};
 
 	const declineMatch = () => {
-		fetch(`http://localhost:4000/api/decline_match/${user.id}/${otherUser.id}`, {
+		fetch(`http://localhost:4000/api/decline_match/${user.id}/${otherUser?.id}`, {
 			method: 'PATCH'
 		})
 			.then((res) => res.json())
@@ -31,7 +32,7 @@
 	};
 
 	const acceptMatch = () => {
-		fetch(`http://localhost:4000/api/accept_match/${user.id}/${otherUser.id}`, { method: 'PATCH' })
+		fetch(`http://localhost:4000/api/accept_match/${user.id}/${otherUser?.id}`, { method: 'PATCH' })
 			.then((res) => res.json())
 			.then((res) => {
 				console.log(res);
@@ -45,7 +46,7 @@
 	<div class="m-2">
 		<div class="avatar mb-3 justify-center">
 			<div class="w-5/6 rounded-full ring ring-primary md:w-2/5">
-				<img src="images/jack_and_buster.jpeg" alt="profile pictue" />
+				<img src={otherUser.image_url} alt="profile pictue" />
 			</div>
 		</div>
 		<div class="flex flex-col items-center">

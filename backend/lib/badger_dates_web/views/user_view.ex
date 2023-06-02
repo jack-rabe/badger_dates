@@ -16,7 +16,8 @@ defmodule BadgerDatesWeb.UserView do
       name: user.name,
       age: user.age,
       location: user.location,
-      major: user.major
+      major: user.major,
+      image_url: user.image_url
     }
   end
 end

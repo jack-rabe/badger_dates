@@ -23,7 +23,7 @@ export const actions = {
 
 				const imageURL = res?.secure_url;
 				if (imageURL) {
-					formData.append('image-url', imageURL);
+					formData.append('image_url', imageURL);
 					createUser(formData);
 				}
 			})
