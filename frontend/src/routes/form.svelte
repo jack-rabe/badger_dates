@@ -1,14 +1,11 @@
 <script lang="ts">
-	import { deserialize } from '$app/forms';
-	import type { ActionResult } from '@sveltejs/kit';
-
 	const locationOptions = ['Southeast', 'Lakeshore', 'Off-Campus'];
 	let form: HTMLFormElement;
 	async function handleSubmit(_e: Event) {
 		const formData = new FormData(form);
 
 		// @ts-ignore
-		const res = fetch(this.action, {
+		fetch(this.action, {
 			method: 'POST',
 			body: formData
 		})

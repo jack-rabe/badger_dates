@@ -44,7 +44,7 @@
 
 {#if otherUser}
 	<div class="m-2">
-		<div class="avatar mb-3 justify-center">
+		<div class="avatar mb-3 w-full justify-center">
 			<div class="w-5/6 rounded-full ring ring-primary md:w-2/5">
 				<img src={otherUser.image_url} alt="profile pictue" />
 			</div>
