@@ -9,6 +9,7 @@ defmodule BadgerDates.Accounts.User do
     field :location, :string
     field :major, :string
     field :name, :string
+    field :email, :string
     field :image_url, :string
 
     timestamps()
@@ -17,7 +18,7 @@ defmodule BadgerDates.Accounts.User do
   @doc false
   def changeset(user, attrs) do
     user
-    |> cast(attrs, [:name, :age, :location, :major, :image_url])
-    |> validate_required([:name, :age, :location, :major, :image_url])
+    |> cast(attrs, [:name, :email, :age, :location, :major, :image_url])
+    |> validate_required([:name, :email, :age, :location, :major, :image_url])
   end
 end
