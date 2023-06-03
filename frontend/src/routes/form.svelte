@@ -1,6 +1,7 @@
 <script lang="ts">
 	const locationOptions = ['Southeast', 'Lakeshore', 'Off-Campus'];
 	let form: HTMLFormElement;
+
 	async function handleSubmit(_e: Event) {
 		const formData = new FormData(form);
 
@@ -19,6 +20,16 @@
 	<label class="input-group w-3/4 md:w-1/2">
 		<span class="w-28">Name</span>
 		<input name="name" type="text" required class="input-bordered input w-full" />
+	</label>
+	<label class="input-group w-3/4 md:w-1/2">
+		<span class="w-28">Email</span>
+		<input
+			name="email"
+			type="email"
+			pattern=".+@wisc.edu"
+			required
+			class="input-bordered input w-full"
+		/>
 	</label>
 	<label class="input-group w-3/4 md:w-1/2">
 		<span class="w-28">Age</span>
