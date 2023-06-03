@@ -69,6 +69,15 @@ defmodule BadgerDates.Accounts do
     end
   end
 
+  # creates links between a new user and all other users
+  def create_user_links(%User{id: new_id}) do
+    Enum.each(list_users(), fn %User{id: other_id} ->
+      if new_id != other_id do
+        create_user_link(%{user1: new_id, user2: other_id})
+      end
+    end)
+  end
+
   @doc """
   Returns the list of users.
 

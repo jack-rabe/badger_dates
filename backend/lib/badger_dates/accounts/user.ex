@@ -20,5 +20,6 @@ defmodule BadgerDates.Accounts.User do
     user
     |> cast(attrs, [:name, :email, :age, :location, :major, :image_url])
     |> validate_required([:name, :email, :age, :location, :major, :image_url])
+    |> validate_format(:email, ~r/.+@wisc.edu/)
   end
 end

@@ -13,12 +13,9 @@ defmodule BadgerDatesWeb.UserController do
   end
 
   def create(conn, user_params) do
+    # TODO - additional email validation (like uniqueness), maybe even sending them one
     with {:ok, %User{} = new_user} <- Accounts.create_user(user_params) do
-      Enum.each(Accounts.list_users(), fn %User{id: other_id} ->
-        if new_user.id != other_id do
-          Accounts.create_user_link(%{user1: new_user.id, user2: other_id})
-        end
-      end)
+      Task.async(fn -> Accounts.create_user_links(new_user) end)
 
       conn
       |> put_status(:created)
