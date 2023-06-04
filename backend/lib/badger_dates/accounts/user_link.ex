@@ -1,13 +1,13 @@
 defmodule BadgerDates.Accounts.UserLink do
   use Ecto.Schema
   import Ecto.Changeset
+  alias BadgerDates.Accounts.User
 
-  @primary_key {:id, :binary_id, autogenerate: true}
-  @foreign_key_type :binary_id
+  @primary_key false
   schema "user_links" do
-    field :user1, Ecto.UUID
+    belongs_to :user_one, User, foreign_key: :user1, type: Ecto.UUID
+    belongs_to :user_two, User, foreign_key: :user2, type: Ecto.UUID
     field :user1_response, :string, default: ""
-    field :user2, Ecto.UUID
     field :user2_response, :string, default: ""
 
     timestamps()

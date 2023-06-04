@@ -29,8 +29,6 @@ defmodule BadgerDates.Accounts do
     |> Repo.all()
   end
 
-  def get_link!(link_id), do: Repo.get!(UserLink, link_id)
-
   def get_link!(user1_id, user2_id) do
     from(ul in UserLink,
       where:
@@ -48,7 +46,7 @@ defmodule BadgerDates.Accounts do
 
   # TODO remove duplicate query code
   def get_potential_match(user_id) do
-    res =
+    matching_links =
       from(ul in UserLink,
         where:
           (ul.user1 == ^user_id and ul.user1_response == "") or
@@ -56,15 +54,16 @@ defmodule BadgerDates.Accounts do
       )
       |> Repo.all()
 
-    if res == [] do
+    if Enum.empty?(matching_links) do
       nil
     else
-      [valid_match | _] = res
+      [first_link | _tl] = matching_links
+      valid_match = Repo.preload(first_link, :user_one) |> Repo.preload(:user_two)
 
       if user_id == valid_match.user2 do
-        get_user!(valid_match.user1)
+        valid_match.user_one
       else
-        get_user!(valid_match.user2)
+        valid_match.user_two
       end
     end
   end
