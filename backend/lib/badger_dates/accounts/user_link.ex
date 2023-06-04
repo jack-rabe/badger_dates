@@ -3,7 +3,7 @@ defmodule BadgerDates.Accounts.UserLink do
   import Ecto.Changeset
   alias BadgerDates.Accounts.User
 
-  @primary_key false
+  @primary_key {:id, :binary_id, autogenerate: true}
   schema "user_links" do
     belongs_to :user_one, User, foreign_key: :user1, type: Ecto.UUID
     belongs_to :user_two, User, foreign_key: :user2, type: Ecto.UUID
