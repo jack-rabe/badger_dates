@@ -1,9 +1,8 @@
 defmodule BadgerDatesWeb.UserController do
   use BadgerDatesWeb, :controller
 
-  alias BadgerDates.Accounts.UserLink
+  alias BadgerDates.Accounts.{User, UserLink}
   alias BadgerDates.Accounts
-  alias BadgerDates.Accounts.User
 
   action_fallback BadgerDatesWeb.FallbackController
 

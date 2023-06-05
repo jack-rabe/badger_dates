@@ -5,8 +5,7 @@ defmodule BadgerDates.Accounts do
 
   import Ecto.Query, warn: false
   alias BadgerDates.Repo
-  alias BadgerDates.Accounts.User
-  alias BadgerDates.Accounts.UserLink
+  alias BadgerDates.Accounts.{User, UserLink}
 
   @doc """
   Creates links to all other existing users

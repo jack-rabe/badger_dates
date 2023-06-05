@@ -1,4 +1,5 @@
 defmodule BadgerDates.Accounts.Message do
+  alias BadgerDates.Accounts.UserLink
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -6,7 +7,7 @@ defmodule BadgerDates.Accounts.Message do
   @foreign_key_type :binary_id
   schema "messages" do
     field :content, :string
-    field :link_id, :binary_id
+    belongs_to :link, UserLink, type: Ecto.UUID
 
     timestamps()
   end
@@ -14,7 +15,7 @@ defmodule BadgerDates.Accounts.Message do
   @doc false
   def changeset(message, attrs) do
     message
-    |> cast(attrs, [:content])
-    |> validate_required([:content])
+    |> cast(attrs, [:content, :link_id])
+    |> validate_required([:content, :link_id])
   end
 end

@@ -30,7 +30,8 @@ defmodule BadgerDates.AccountsFixtures do
     {:ok, message} =
       attrs
       |> Enum.into(%{
-        content: "some content"
+        content: "some content",
+        link_id: "fea7f3d8-1f9d-4b72-b7c8-42afc2a42ab3"
       })
       |> BadgerDates.Accounts.create_message()
 
