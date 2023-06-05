@@ -10,7 +10,9 @@ defmodule BadgerDatesWeb.UserControllerTest do
     age: 42,
     location: "some location",
     major: "some major",
-    name: "some name"
+    name: "some name",
+    email: "addr@wisc.edu",
+    image_url: "https://url.com"
   }
   @update_attrs %{
     age: 43,
