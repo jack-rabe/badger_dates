@@ -173,16 +173,13 @@ defmodule BadgerDates.Accounts do
   alias BadgerDates.Accounts.Message
 
   @doc """
-  Returns the list of messages.
-
-  ## Examples
-
-      iex> list_messages()
-      [%Message{}, ...]
-
+  Returns the list of messages associated with a
   """
-  def list_messages do
-    Repo.all(Message)
+  def list_messages(link_id) do
+    from(msg in Message,
+      where: msg.link_id == ^link_id
+    )
+    |> Repo.all()
   end
 
   @doc """
