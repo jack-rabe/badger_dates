@@ -40,7 +40,9 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@types/phoenix": "^1.6.0",
 		"cloudinary": "^1.37.0",
-		"daisyui": "^2.51.6"
+		"daisyui": "^2.51.6",
+		"phoenix": "^1.6.15"
 	}
 }
