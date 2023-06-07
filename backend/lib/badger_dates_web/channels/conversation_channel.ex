@@ -3,14 +3,14 @@ defmodule BadgerDatesWeb.ConversationChannel do
 
   # TODO - add authorization (needed across app)
   @impl true
-  def join("conversation:lobby", payload, socket) do
-    IO.inspect(payload)
+  def join("conversation:lobby", _payload, socket) do
     {:ok, socket}
   end
 
   @impl true
-  def handle_in(_, payload, socket) do
-    {:reply, {:ok, payload}, socket}
+  def handle_in("message", payload, socket) do
+    IO.inspect(payload)
+    {:noreply, socket}
   end
 
   @impl true

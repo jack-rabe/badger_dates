@@ -1,9 +1,12 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import type { Message } from '../../types/Message';
-	import { Socket } from 'phoenix';
+	import { Channel, Socket } from 'phoenix';
 
+	let channel: Channel;
+	let messageToSend: string;
 	let messages: Message[] = [];
+
 	const linkId = '74407b56-952a-4215-aec4-dafa4057b8f6';
 	const userId = '28db6b2a-6a32-4e0d-b864-c9d5295bd66b';
 
@@ -11,9 +14,7 @@
 		const url = 'ws://localhost:4000/conversation';
 		const socket = new Socket(url, {});
 		socket.connect();
-		console.log(socket);
-		const channel = socket.channel('conversation:lobby', {});
-		console.log(channel);
+		channel = socket.channel('conversation:lobby', {});
 		channel
 			.join()
 			.receive('ok', (_res) => {
@@ -23,9 +24,6 @@
 				console.error('Unable to join channel', response);
 			});
 
-		channel.push('hi', { body: 'wassup' });
-
-		socket.connect();
 		fetch(`http://localhost:4000/api/messages?user_link=${linkId}`)
 			.then((res) => res.json())
 			.then((res) => {
@@ -34,6 +32,16 @@
 			})
 			.catch((e) => console.error(e));
 	});
+
+	const sendMessage = () => {
+		if (!channel) {
+			console.error('no open channel');
+			return;
+		}
+
+		channel.push('message', { content: messageToSend, userId, linkId });
+		messageToSend = '';
+	};
 </script>
 
 {#each messages as msg}
@@ -47,3 +55,18 @@
 		</div>
 	{/if}
 {/each}
+
+<div class="flex">
+	<input
+		type="text"
+		on:keydown={(event) => {
+			if (event.key !== 'Enter') {
+				return;
+			}
+			sendMessage();
+		}}
+		bind:value={messageToSend}
+		class="input-primary input m-2"
+	/>
+	<button class="btn m-2" on:click={sendMessage}>send</button>
+</div>
