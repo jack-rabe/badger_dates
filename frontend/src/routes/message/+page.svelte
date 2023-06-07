@@ -24,10 +24,14 @@
 				console.error('Unable to join channel', response);
 			});
 
+		channel.on('message_sent', (payload) => {
+			messages.push(payload);
+			messages = messages;
+		});
+
 		fetch(`http://localhost:4000/api/messages?user_link=${linkId}`)
 			.then((res) => res.json())
 			.then((res) => {
-				console.log(res);
 				messages = res.data;
 			})
 			.catch((e) => console.error(e));
@@ -39,7 +43,7 @@
 			return;
 		}
 
-		channel.push('message', { content: messageToSend, userId, linkId });
+		channel.push('create_message', { content: messageToSend, user_id: userId, link_id: linkId });
 		messageToSend = '';
 	};
 </script>

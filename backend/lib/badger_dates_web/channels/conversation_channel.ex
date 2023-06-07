@@ -8,7 +8,25 @@ defmodule BadgerDatesWeb.ConversationChannel do
   end
 
   @impl true
-  def handle_in("message", payload, socket) do
+  def handle_in("create_message", msg, socket) do
+    case BadgerDates.Accounts.create_message(msg) do
+      {:ok, %{id: id, content: content, user_id: user_id, inserted_at: sent_at}} ->
+        broadcast(socket, "message_sent", %{
+          id: id,
+          content: content,
+          user: user_id,
+          sent_at: sent_at
+        })
+
+        {:noreply, socket}
+
+      _err ->
+        IO.puts("error creating message")
+        {:noreply, socket}
+    end
+  end
+
+  def handle_in("message_sent", payload, socket) do
     IO.inspect(payload)
     {:noreply, socket}
   end
