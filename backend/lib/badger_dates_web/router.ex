@@ -13,6 +13,7 @@ defmodule BadgerDatesWeb.Router do
     # UserLinks routes
     get "/links/:user_id", UserController, :links
     get "/links/:user_id/next", UserController, :get_potential_match
+    get "/links/:user_id/confirmed_matches", UserController, :get_confirmed_matches
     patch "/accept_match/:user_id/:other_id", UserController, :accept_match
     patch "/decline_match/:user_id/:other_id", UserController, :decline_match
     # messages routes

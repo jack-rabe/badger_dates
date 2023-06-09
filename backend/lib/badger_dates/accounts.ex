@@ -17,13 +17,13 @@ defmodule BadgerDates.Accounts do
   end
 
   @doc """
-    Returns the list of user links for a given user that the user has not already responded to 
+  Returns the list of user links for a given user that both people have said yes to
   """
-  def list_user_links(user_id) do
+  def list_confirmed_matches(user_id) do
     from(ul in UserLink,
       where:
-        (ul.user1 == ^user_id and ul.user1_response == "") or
-          (ul.user2 == ^user_id and ul.user2_response == "")
+        (ul.user1 == ^user_id or ul.user2 == ^user_id) and ul.user1_response == "yes" and
+          ul.user2_response == "yes"
     )
     |> Repo.all()
   end
@@ -155,19 +155,6 @@ defmodule BadgerDates.Accounts do
   """
   def delete_user(%User{} = user) do
     Repo.delete(user)
-  end
-
-  @doc """
-  Returns an `%Ecto.Changeset{}` for tracking user changes.
-
-  ## Examples
-
-      iex> change_user(user)
-      %Ecto.Changeset{data: %User{}}
-
-  """
-  def change_user(%User{} = user, attrs \\ %{}) do
-    User.changeset(user, attrs)
   end
 
   alias BadgerDates.Accounts.Message

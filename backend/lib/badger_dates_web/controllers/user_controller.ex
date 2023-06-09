@@ -3,13 +3,9 @@ defmodule BadgerDatesWeb.UserController do
 
   alias BadgerDates.Accounts.{User, UserLink}
   alias BadgerDates.Accounts
+  alias BadgerDates.Accounts.User
 
   action_fallback BadgerDatesWeb.FallbackController
-
-  def index(conn, _params) do
-    users = Accounts.list_users()
-    render(conn, "index.json", users: users)
-  end
 
   def create(conn, user_params) do
     # TODO - additional email validation (like uniqueness), maybe even sending them one
@@ -46,6 +42,12 @@ defmodule BadgerDatesWeb.UserController do
 
   # routes for UserLinks
 
+  def get_confirmed_matches(conn, %{"user_id" => user_id}) do
+    links = Accounts.list_confirmed_matches(user_id)
+    conn = put_view(conn, BadgerDatesWeb.UserLinksView)
+    render(conn, "index.json", links: links)
+  end
+
   @doc """
     returns a single User who has not been linked before
   """
@@ -59,15 +61,6 @@ defmodule BadgerDatesWeb.UserController do
     else
       render(conn, "show.json", user: match)
     end
-  end
-
-  @doc """
-    returns all potential links for a given user (probably not needed)
-  """
-  def links(conn, %{"user_id" => user_id}) do
-    conn = put_view(conn, BadgerDatesWeb.UserLinksView)
-    links = Accounts.list_user_links(user_id)
-    render(conn, "index.json", links: links)
   end
 
   def accept_match(conn, params) do
