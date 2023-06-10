@@ -17,7 +17,7 @@ defmodule BadgerDatesWeb.Router do
     patch "/accept_match/:user_id/:other_id", UserController, :accept_match
     patch "/decline_match/:user_id/:other_id", UserController, :decline_match
     # messages routes
-    resources "/messages", MessageController, except: [:new, :edit]
+    resources "/messages", MessageController, only: [:index]
   end
 
   # Enables LiveDashboard only for development

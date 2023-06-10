@@ -5,7 +5,7 @@ defmodule BadgerDates.Accounts do
 
   import Ecto.Query, warn: false
   alias BadgerDates.Repo
-  alias BadgerDates.Accounts.{User, UserLink}
+  alias BadgerDates.Accounts.{User, UserLink, Message}
 
   @doc """
   Creates links to all other existing users
@@ -157,10 +157,8 @@ defmodule BadgerDates.Accounts do
     Repo.delete(user)
   end
 
-  alias BadgerDates.Accounts.Message
-
   @doc """
-  Returns the list of messages associated with a
+  Returns the list of messages associated with a given link
   """
   def list_messages(link_id) do
     from(msg in Message,
@@ -168,22 +166,6 @@ defmodule BadgerDates.Accounts do
     )
     |> Repo.all()
   end
-
-  @doc """
-  Gets a single message.
-
-  Raises `Ecto.NoResultsError` if the Message does not exist.
-
-  ## Examples
-
-      iex> get_message!(123)
-      %Message{}
-
-      iex> get_message!(456)
-      ** (Ecto.NoResultsError)
-
-  """
-  def get_message!(id), do: Repo.get!(Message, id)
 
   @doc """
   Creates a message.
@@ -204,24 +186,6 @@ defmodule BadgerDates.Accounts do
   end
 
   @doc """
-  Updates a message.
-
-  ## Examples
-
-      iex> update_message(message, %{field: new_value})
-      {:ok, %Message{}}
-
-      iex> update_message(message, %{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def update_message(%Message{} = message, attrs) do
-    message
-    |> Message.changeset(attrs)
-    |> Repo.update()
-  end
-
-  @doc """
   Deletes a message.
 
   ## Examples
@@ -235,18 +199,5 @@ defmodule BadgerDates.Accounts do
   """
   def delete_message(%Message{} = message) do
     Repo.delete(message)
-  end
-
-  @doc """
-  Returns an `%Ecto.Changeset{}` for tracking message changes.
-
-  ## Examples
-
-      iex> change_message(message)
-      %Ecto.Changeset{data: %Message{}}
-
-  """
-  def change_message(%Message{} = message, attrs \\ %{}) do
-    Message.changeset(message, attrs)
   end
 end
