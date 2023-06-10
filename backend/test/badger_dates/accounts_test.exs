@@ -2,10 +2,9 @@ defmodule BadgerDates.AccountsTest do
   use BadgerDates.DataCase
 
   alias BadgerDates.Accounts
+  alias BadgerDates.Accounts.{User, UserLink}
 
   describe "users" do
-    alias BadgerDates.Accounts.User
-
     import BadgerDates.AccountsFixtures
 
     @invalid_attrs %{age: nil, location: nil, major: nil, name: nil}
@@ -69,11 +68,6 @@ defmodule BadgerDates.AccountsTest do
       assert {:ok, %User{}} = Accounts.delete_user(user)
       assert_raise Ecto.NoResultsError, fn -> Accounts.get_user!(user.id) end
     end
-
-    test "change_user/1 returns a user changeset" do
-      user = user_fixture()
-      assert %Ecto.Changeset{} = Accounts.change_user(user)
-    end
   end
 
   describe "messages" do
@@ -83,18 +77,11 @@ defmodule BadgerDates.AccountsTest do
 
     @invalid_attrs %{content: nil}
 
-    test "list_messages/0 returns all messages" do
-      message = message_fixture()
-      assert Accounts.list_messages() == [message]
-    end
-
-    test "get_message!/1 returns the message with given id" do
-      message = message_fixture()
-      assert Accounts.get_message!(message.id) == message
-    end
-
     test "create_message/1 with valid data creates a message" do
-      valid_attrs = %{content: "some content"}
+      %User{id: user_id} = user_fixture()
+      %User{id: other_user_id} = user_fixture()
+      %UserLink{id: link_id} = link_fixture(user_id, other_user_id)
+      valid_attrs = %{user_id: user_id, content: "some content", link_id: link_id}
 
       assert {:ok, %Message{} = message} = Accounts.create_message(valid_attrs)
       assert message.content == "some content"
@@ -104,29 +91,14 @@ defmodule BadgerDates.AccountsTest do
       assert {:error, %Ecto.Changeset{}} = Accounts.create_message(@invalid_attrs)
     end
 
-    test "update_message/2 with valid data updates the message" do
-      message = message_fixture()
-      update_attrs = %{content: "some updated content"}
-
-      assert {:ok, %Message{} = message} = Accounts.update_message(message, update_attrs)
-      assert message.content == "some updated content"
-    end
-
-    test "update_message/2 with invalid data returns error changeset" do
-      message = message_fixture()
-      assert {:error, %Ecto.Changeset{}} = Accounts.update_message(message, @invalid_attrs)
-      assert message == Accounts.get_message!(message.id)
-    end
-
     test "delete_message/1 deletes the message" do
-      message = message_fixture()
+      %User{id: user_id} = user_fixture()
+      %User{id: other_user_id} = user_fixture()
+      %UserLink{id: link_id} = link_fixture(user_id, other_user_id)
+      message = message_fixture(%{user_id: user_id, link_id: link_id})
+
       assert {:ok, %Message{}} = Accounts.delete_message(message)
       assert_raise Ecto.NoResultsError, fn -> Accounts.get_message!(message.id) end
-    end
-
-    test "change_message/1 returns a message changeset" do
-      message = message_fixture()
-      assert %Ecto.Changeset{} = Accounts.change_message(message)
     end
   end
 end

@@ -7,9 +7,6 @@ defmodule BadgerDates.Accounts do
   alias BadgerDates.Repo
   alias BadgerDates.Accounts.{User, UserLink, Message}
 
-  @doc """
-  Creates links to all other existing users
-  """
   def create_user_link(attrs \\ %{}) do
     %UserLink{}
     |> UserLink.changeset(attrs)
@@ -104,6 +101,17 @@ defmodule BadgerDates.Accounts do
 
   """
   def get_user!(id), do: Repo.get!(User, id)
+
+  @doc """
+  Gets a single message.
+  Raises `Ecto.NoResultsError` if the Message does not exist.
+  ## Examples
+      iex> get_message!(123)
+      %Message{}
+      iex> get_message!(456)
+      ** (Ecto.NoResultsError)
+  """
+  def get_message!(id), do: Repo.get!(Message, id)
 
   @doc """
   Creates a user.

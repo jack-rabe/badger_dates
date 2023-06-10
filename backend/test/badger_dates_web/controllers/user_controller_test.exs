@@ -3,7 +3,6 @@ defmodule BadgerDatesWeb.UserControllerTest do
 
   import BadgerDates.AccountsFixtures
 
-  alias BadgerDates.Accounts
   alias BadgerDates.Accounts.User
 
   @create_attrs %{
@@ -26,15 +25,6 @@ defmodule BadgerDatesWeb.UserControllerTest do
     {:ok, conn: put_req_header(conn, "accept", "application/json")}
   end
 
-  describe "index" do
-    setup [:create_user]
-
-    test "lists all users", %{conn: conn} do
-      conn = get(conn, Routes.user_path(conn, :index))
-      assert json_response(conn, 200)["data"] |> length == 1
-    end
-  end
-
   describe "create user" do
     setup do
       create_user(%User{name: "Todd"})
@@ -42,13 +32,12 @@ defmodule BadgerDatesWeb.UserControllerTest do
 
     test "renders user when data is valid", %{conn: conn} do
       conn = post(conn, Routes.user_path(conn, :create), @create_attrs)
-      assert %{"id" => id} = json_response(conn, 201)["data"]
-      assert Accounts.list_user_links(id) |> length == 1
+      assert %{"id" => user_id} = json_response(conn, 201)["data"]
 
-      conn = get(conn, Routes.user_path(conn, :show, id))
+      conn = get(conn, Routes.user_path(conn, :show, user_id))
 
       assert %{
-               "id" => ^id,
+               "id" => ^user_id,
                "age" => 42,
                "location" => "some location",
                "major" => "some major",

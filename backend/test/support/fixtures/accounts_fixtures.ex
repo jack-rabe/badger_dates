@@ -24,15 +24,26 @@ defmodule BadgerDates.AccountsFixtures do
   end
 
   @doc """
+  Generate a link.
+  """
+  def link_fixture(user1_id, user2_id) do
+    {:ok, link} =
+      %{user1: user1_id, user2: user2_id}
+      |> BadgerDates.Accounts.create_user_link()
+
+    link
+  end
+
+  @doc """
   Generate a message.
   """
-  def message_fixture(attrs \\ %{}) do
+  def message_fixture(%{user_id: user_id, link_id: link_id}) do
     {:ok, message} =
-      attrs
-      |> Enum.into(%{
+      %{
+        user_id: user_id,
         content: "some content",
-        link_id: "fea7f3d8-1f9d-4b72-b7c8-42afc2a42ab3"
-      })
+        link_id: link_id
+      }
       |> BadgerDates.Accounts.create_message()
 
     message
