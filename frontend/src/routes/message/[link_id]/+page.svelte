@@ -1,14 +1,14 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import type { Message } from '../../types/Message';
+	import type { Message } from '../../../types/Message';
 	import { Channel, Socket } from 'phoenix';
 	import { userId } from '$lib/stores/user';
+	import { page } from '$app/stores';
 
 	let channel: Channel;
 	let messageToSend: string;
 	let messages: Message[] = [];
-
-	const linkId = '74407b56-952a-4215-aec4-dafa4057b8f6';
+	const linkId = $page.params.link_id;
 
 	onMount(() => {
 		const url = 'ws://localhost:4000/conversation';
