@@ -2,13 +2,13 @@
 	import { onMount } from 'svelte';
 	import type { Message } from '../../types/Message';
 	import { Channel, Socket } from 'phoenix';
+	import { userId } from '$lib/stores/user';
 
 	let channel: Channel;
 	let messageToSend: string;
 	let messages: Message[] = [];
 
 	const linkId = '74407b56-952a-4215-aec4-dafa4057b8f6';
-	const userId = '28db6b2a-6a32-4e0d-b864-c9d5295bd66b';
 
 	onMount(() => {
 		const url = 'ws://localhost:4000/conversation';
@@ -43,13 +43,13 @@
 			return;
 		}
 
-		channel.push('create_message', { content: messageToSend, user_id: userId, link_id: linkId });
+		channel.push('create_message', { content: messageToSend, user_id: $userId, link_id: linkId });
 		messageToSend = '';
 	};
 </script>
 
 {#each messages as msg}
-	{#if msg.user === userId}
+	{#if msg.user === $userId}
 		<div class="chat chat-start m-2">
 			<div class="chat-bubble chat-bubble-primary text-xl md:text-2xl">{msg.content}</div>
 		</div>

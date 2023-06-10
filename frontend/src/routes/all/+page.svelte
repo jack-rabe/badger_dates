@@ -1,12 +1,12 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import type { User } from '../../types/User';
+	import { userId } from '$lib/stores/user';
 
-	const userId = '28db6b2a-6a32-4e0d-b864-c9d5295bd66b';
 	let matches: User[] = [];
 
 	onMount(() => {
-		fetch(`http://localhost:4000/api/links/${userId}/confirmed_matches`)
+		fetch(`http://localhost:4000/api/links/${$userId}/confirmed_matches`)
 			.then((res) => res.json())
 			.then((res) => {
 				matches = res.data;
