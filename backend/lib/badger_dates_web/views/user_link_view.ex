@@ -2,13 +2,13 @@ defmodule BadgerDatesWeb.UserLinksView do
   use BadgerDatesWeb, :view
 
   alias BadgerDatesWeb.UserLinksView
-  alias BadgerDates.Accounts.{User, UserLink}
+  alias BadgerDates.Accounts.UserLink
 
   def render("index.json", %{links: links}) do
     %{data: render_many(links, UserLinksView, "link.json")}
   end
 
-  # TODO fix this hacky way of passing users instead of links
+  # TODO fix this hacky way of passing users + link_id instead of links
   def render("with_users.json", %{links: users}) do
     %{data: render_many(users, UserLinksView, "with_users.json")}
   end
@@ -26,9 +26,10 @@ defmodule BadgerDatesWeb.UserLinksView do
     }
   end
 
-  def render("with_users.json", %{user_links: user = %User{}}) do
+  def render("with_users.json", %{user_links: user}) do
     %{
       id: user.id,
+      link_id: user.link_id,
       name: user.name,
       major: user.major,
       location: user.location,

@@ -6,4 +6,5 @@ export type User = {
 	major: string;
 	id: string;
 	image_url: string;
+	link_id?: string;
 };

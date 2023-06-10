@@ -17,7 +17,7 @@
 
 <div class="grid grid-cols-2 md:grid-cols-3">
 	{#each matches as match}
-		<div class="card m-2 bg-base-100 shadow-xl">
+		<a href={`/message/${match.link_id}`} class="card m-2 bg-base-100 shadow-xl">
 			<figure><img src={match.image_url} alt="profile pic" /></figure>
 			<div class="card-body">
 				<h2 class="card-title">{match.name}</h2>
@@ -26,6 +26,6 @@
 					<div>{match.location}</div>
 				</div>
 			</div>
-		</div>
+		</a>
 	{/each}
 </div>

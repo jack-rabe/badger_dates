@@ -47,11 +47,14 @@ defmodule BadgerDatesWeb.UserController do
 
     matches =
       Enum.map(links, fn link ->
-        if user_id == link.user1 do
-          Accounts.get_user!(link.user2)
-        else
-          Accounts.get_user!(link.user1)
-        end
+        user =
+          if user_id == link.user1 do
+            Accounts.get_user!(link.user2) |> Map.put(:link_id, link.id)
+          else
+            Accounts.get_user!(link.user1)
+          end
+
+        user |> Map.put(:link_id, link.id)
       end)
 
     render(conn, "with_users.json", links: matches)
