@@ -78,6 +78,7 @@ defmodule BadgerDates.AccountsTest do
     @invalid_attrs %{content: nil}
 
     test "create_message/1 with valid data creates a message" do
+      # TODO refactor this duplicate code
       %User{id: user_id} = user_fixture()
       %User{id: other_user_id} = user_fixture()
       %UserLink{id: link_id} = link_fixture(user_id, other_user_id)

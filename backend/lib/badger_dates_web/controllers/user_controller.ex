@@ -3,7 +3,6 @@ defmodule BadgerDatesWeb.UserController do
 
   alias BadgerDates.Accounts.{User, UserLink}
   alias BadgerDates.Accounts
-  alias BadgerDates.Accounts.User
 
   action_fallback BadgerDatesWeb.FallbackController
 
@@ -45,7 +44,17 @@ defmodule BadgerDatesWeb.UserController do
   def get_confirmed_matches(conn, %{"user_id" => user_id}) do
     links = Accounts.list_confirmed_matches(user_id)
     conn = put_view(conn, BadgerDatesWeb.UserLinksView)
-    render(conn, "index.json", links: links)
+
+    matches =
+      Enum.map(links, fn link ->
+        if user_id == link.user1 do
+          Accounts.get_user!(link.user2)
+        else
+          Accounts.get_user!(link.user1)
+        end
+      end)
+
+    render(conn, "with_users.json", links: matches)
   end
 
   @doc """
