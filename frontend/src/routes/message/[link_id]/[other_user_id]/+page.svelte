@@ -18,7 +18,7 @@
 		const url = 'ws://localhost:4000/conversation';
 		const socket = new Socket(url, {});
 		socket.connect();
-		channel = socket.channel('conversation:lobby', {});
+		channel = socket.channel(`conversation:${linkId}`, {});
 		channel
 			.join()
 			.receive('ok', (_res) => {
