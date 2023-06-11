@@ -5,6 +5,7 @@
 	import { Channel, Socket } from 'phoenix';
 	import { userId } from '$lib/stores/user';
 	import { page } from '$app/stores';
+	import { hostname } from '$lib/stores/host';
 
 	let channel: Channel;
 	let messageToSend: string;
@@ -24,7 +25,7 @@
 	};
 
 	onMount(() => {
-		const url = 'ws://localhost:4000/conversation';
+		const url = `ws://${$hostname}/conversation`;
 		const socket = new Socket(url, {});
 		socket.connect();
 		channel = socket.channel(`conversation:${linkId}`, {});
@@ -42,14 +43,14 @@
 			messages = messages;
 		});
 
-		fetch(`http://localhost:4000/api/messages?user_link=${linkId}`)
+		fetch(`http://${$hostname}/api/messages?user_link=${linkId}`)
 			.then((res) => res.json())
 			.then((res) => {
 				messages = res.data;
 			})
 			.catch((e) => console.error(e));
 
-		fetch(`http://localhost:4000/api/users/${otherUserId}`)
+		fetch(`http://${$hostname}/api/users/${otherUserId}`)
 			.then((res) => res.json())
 			.then((res) => {
 				otherUser = res.data;

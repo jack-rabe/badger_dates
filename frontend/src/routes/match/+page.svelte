@@ -2,13 +2,14 @@
 	import { onMount } from 'svelte';
 	import type { User } from '$lib/types/User';
 	import { userId } from '$lib/stores/user';
+	import { hostname } from '$lib/stores/host';
 
 	let otherUser: User | null;
 
 	onMount(() => setNextMatch());
 
 	const setNextMatch = () => {
-		fetch(`http://localhost:4000/api/links/${$userId}/next`)
+		fetch(`http://${$hostname}/api/links/${$userId}/next`)
 			.then((res) => res.json())
 			.then((res) => {
 				if (res && res.data != 'no matches') otherUser = res.data;
@@ -19,7 +20,7 @@
 	};
 
 	const declineMatch = () => {
-		fetch(`http://localhost:4000/api/decline_match/${$userId}/${otherUser?.id}`, {
+		fetch(`http://${$hostname}/api/decline_match/${$userId}/${otherUser?.id}`, {
 			method: 'PATCH'
 		})
 			.then((res) => res.json())
@@ -31,7 +32,7 @@
 	};
 
 	const acceptMatch = () => {
-		fetch(`http://localhost:4000/api/accept_match/${$userId}/${otherUser?.id}`, { method: 'PATCH' })
+		fetch(`http://${$hostname}/api/accept_match/${$userId}/${otherUser?.id}`, { method: 'PATCH' })
 			.then((res) => res.json())
 			.then((res) => {
 				console.log(res);
