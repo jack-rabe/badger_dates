@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
+	import { onMount, afterUpdate } from 'svelte';
 	import type { Message } from '$lib/types/Message';
 	import type { User } from '$lib/types/User';
 	import { Channel, Socket } from 'phoenix';
@@ -9,10 +9,19 @@
 	let channel: Channel;
 	let messageToSend: string;
 	let messages: Message[] = [];
+	let messagesElement: HTMLElement;
 
 	const linkId = $page.params.link_id;
 	const otherUserId = $page.params.other_user_id;
 	let otherUser: User;
+
+	// scroll to the bottom so that the newest messages are seen
+	afterUpdate(() => {
+		if (messages) scrollToBottom(messagesElement);
+	});
+	const scrollToBottom = async (node: HTMLElement) => {
+		node.scroll({ top: node.scrollHeight, behavior: 'smooth' });
+	};
 
 	onMount(() => {
 		const url = 'ws://localhost:4000/conversation';
@@ -59,17 +68,19 @@
 	};
 </script>
 
-<div class="h-4/5">
-	{#if otherUser}
-		<div class="m-2 flex items-center justify-center p-2 text-xl font-bold">
-			{otherUser.name}
-			<div class="avatar ml-2">
-				<div class="w-12 rounded-full">
-					<img src={otherUser.image_url} alt="profile pic" />
-				</div>
+{#if otherUser}
+	<div
+		class="m-1 flex items-center justify-center rounded-lg border border-primary bg-secondary p-2 text-xl font-bold"
+	>
+		{otherUser.name}
+		<div class="avatar ml-2">
+			<div class="w-12 rounded-full">
+				<img src={otherUser.image_url} alt="profile pic" />
 			</div>
 		</div>
-	{/if}
+	</div>
+{/if}
+<div bind:this={messagesElement} id="i" class="h-3/4 overflow-scroll">
 	{#each messages as msg}
 		{#if msg.user === $userId}
 			<div class="chat chat-start m-2">
