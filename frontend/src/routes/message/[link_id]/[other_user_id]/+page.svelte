@@ -1,14 +1,18 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import type { Message } from '../../../types/Message';
+	import type { Message } from '../../../../types/Message';
 	import { Channel, Socket } from 'phoenix';
 	import { userId } from '$lib/stores/user';
 	import { page } from '$app/stores';
+	import type { User } from '../../../../types/User';
 
 	let channel: Channel;
 	let messageToSend: string;
 	let messages: Message[] = [];
+
 	const linkId = $page.params.link_id;
+	const otherUserId = $page.params.other_user_id;
+	let otherUser: User;
 
 	onMount(() => {
 		const url = 'ws://localhost:4000/conversation';
@@ -35,6 +39,13 @@
 				messages = res.data;
 			})
 			.catch((e) => console.error(e));
+
+		fetch(`http://localhost:4000/api/users/${otherUserId}`)
+			.then((res) => res.json())
+			.then((res) => {
+				otherUser = res.data;
+			})
+			.catch((e) => console.error(e));
 	});
 
 	const sendMessage = () => {
@@ -48,19 +59,33 @@
 	};
 </script>
 
-{#each messages as msg}
-	{#if msg.user === $userId}
-		<div class="chat chat-start m-2">
-			<div class="chat-bubble chat-bubble-primary text-xl md:text-2xl">{msg.content}</div>
-		</div>
-	{:else}
-		<div class="chat chat-end m-2">
-			<div class="chat-bubble chat-bubble-secondary text-xl md:text-2xl">{msg.content}</div>
+<div class="h-4/5">
+	{#if otherUser}
+		<div class="m-2 flex items-center justify-center p-2 text-xl font-bold">
+			{otherUser.name}
+			<div class="avatar ml-2">
+				<div class="w-12 rounded-full">
+					<img src={otherUser.image_url} alt="profile pic" />
+				</div>
+			</div>
 		</div>
 	{/if}
-{/each}
+	{#each messages as msg}
+		{#if msg.user === $userId}
+			<div class="chat chat-start m-2">
+				<div class="chat-bubble chat-bubble-primary text-xl md:text-2xl">
+					{msg.content}
+				</div>
+			</div>
+		{:else}
+			<div class="chat chat-end m-2">
+				<div class="chat-bubble chat-bubble-secondary text-xl md:text-2xl">{msg.content}</div>
+			</div>
+		{/if}
+	{/each}
+</div>
 
-<div class="flex">
+<div>
 	<input
 		type="text"
 		on:keydown={(event) => {
@@ -70,7 +95,7 @@
 			sendMessage();
 		}}
 		bind:value={messageToSend}
-		class="input-primary input m-2"
+		class="input-primary input m-2 w-3/5"
 	/>
 	<button class="btn m-2" on:click={sendMessage}>send</button>
 </div>
