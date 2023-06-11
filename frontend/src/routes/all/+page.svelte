@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import type { User } from '../../types/User';
+	import type { User } from '$lib/types/User';
 	import { userId } from '$lib/stores/user';
 
 	let matches: User[] = [];

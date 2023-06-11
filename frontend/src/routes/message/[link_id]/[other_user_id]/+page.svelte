@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import type { Message } from '../../../../types/Message';
+	import type { Message } from '$lib/types/Message';
+	import type { User } from '$lib/types/User';
 	import { Channel, Socket } from 'phoenix';
 	import { userId } from '$lib/stores/user';
 	import { page } from '$app/stores';
-	import type { User } from '../../../../types/User';
 
 	let channel: Channel;
 	let messageToSend: string;
